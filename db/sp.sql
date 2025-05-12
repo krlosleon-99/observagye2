@@ -219,7 +219,7 @@ BEGIN
 		fecha_observacion,
         coordenada_longitud,
         coordenada_latitud,
-		estado,
+		id_estado,
         imagen_1,
 		imagen_2,
 		imagen_3,
@@ -233,7 +233,7 @@ BEGIN
         (data_observacion->>'fecha_observacion')::TIMESTAMP,
         (data_observacion->>'coordenada_longitud')::DECIMAL,
         (data_observacion->>'coordenada_latitud')::DECIMAL,
-		(data_observacion->>'estado')::BOOLEAN,
+		COALESCE((data_observacion->>'id_estado')::BIGINT, 1),
 		(data_observacion->>'imagen_1'),
 	    NOW(),
 		NOW()
