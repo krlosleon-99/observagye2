@@ -5,7 +5,12 @@ export let dbPool: Pool;
 
 // Inicializa las conexiones a la base de datos
 export async function initDbConnections(): Promise<void> {
-  dbPool = new Pool(config.database);
+  dbPool = new Pool({
+    ...config.database,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
 
   console.log(config.database);
 
