@@ -8,7 +8,7 @@ admin.initializeApp({
     privateKey: config.firebase.private_key,
     clientEmail: config.firebase.client_email,
   }),
-  storageBucket: 'observa-gye3.appspot.com', // Asegúrate de usar el bucket correcto
+  storageBucket: 'observa-gye2.appspot.com', // Asegúrate de usar el bucket correcto
 });
 // Obtén una referencia al bucket de almacenamiento
 const bucket = admin.storage().bucket();
