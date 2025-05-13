@@ -72,22 +72,21 @@ export async function ListaEstadosObservacion(req: Request, res: Response) {
 
 export async function ListaObservaciones(req: Request, res: Response) {
   try {
-
     const { estado, id_usuario } = req.query;
 
-    const id_estado = estado !== undefined ? estado: null;
+    const id_estado = estado !== undefined ? estado : null;
 
-    // Consulta las alertas desde la base de datos
+    // Consulta las observaciones desde la base de datos
     const result = await dbPool.query('SELECT * FROM buscar_observaciones_estado($1,$2)', [id_estado, id_usuario || null]);
     const observaciones = result.rows;
     const data = {
       observaciones: observaciones
-    }
+    };
     return responseService(200, data, "Lista de observaciones obtenida", false, res);
 
   } catch (err) {
     console.error('Error:', err);
-    responseService(500, null, "Error al obtener la lista de observaciones", false, res)
+    responseService(500, null, "Error al obtener la lista de observaciones", false, res);
   }
 }
 

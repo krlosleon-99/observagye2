@@ -369,7 +369,7 @@ BEGIN
 END;
 $BODY$;
 
-ALTER FUNCTION public.buscar_observaciones_estado(boolean, integer)
+ALTER FUNCTION public.buscar_observaciones_estado(bigint, integer)
     OWNER TO postgres;
 
 
