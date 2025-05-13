@@ -339,7 +339,7 @@ BEGIN
         a.fecha_observacion, -- Aquí sigue siendo TIMESTAMP
         a.coordenada_longitud,
         a.coordenada_latitud,
-        a.estado,
+        a.id_estado,
         a.imagen_1,
         a.imagen_2,
         a.imagen_3,
@@ -349,7 +349,7 @@ BEGIN
     JOIN usuarios c ON a.id_usuario = c.id_usuario
     JOIN senderos d ON a.id_sendero = d.id_sendero
     JOIN categorias_especies e ON b.id_categoria_especie = e.id_categoria_especie
-    WHERE (p_estado IS NULL OR a.estado = p_estado)
+    WHERE (p_estado IS NULL OR a.id_estado = p_estado)
       AND (p_id_usuario IS NULL OR a.id_usuario = p_id_usuario);
 END;
 $BODY$;
