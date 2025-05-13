@@ -75,9 +75,10 @@ export async function ListaObservaciones(req: Request, res: Response) {
     const { estado, id_usuario } = req.query;
 
     const id_estado = estado !== undefined ? estado : null;
+    const usuario = id_usuario && id_usuario !== "" ? id_usuario : null;
 
     // Consulta las observaciones desde la base de datos
-    const result = await dbPool.query('SELECT * FROM buscar_observaciones_estado($1,$2)', [id_estado, id_usuario || null]);
+    const result = await dbPool.query('SELECT * FROM buscar_observaciones_estado($1,$2)', [id_estado, usuario]);
     const observaciones = result.rows;
     const data = {
       observaciones: observaciones
