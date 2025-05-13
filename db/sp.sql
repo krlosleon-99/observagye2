@@ -205,42 +205,55 @@ END;
 $$;
  
 
-CREATE OR REPLACE PROCEDURE sp_crear_observacion(
-	IN data_observacion json,
-	OUT new_id integer)
-LANGUAGE 'plpgsql'
-AS $$
+CREATE OR REPLACE FUNCTION sp_crear_observacion(data_observacion JSON)
+RETURNS BIGINT AS $$
+DECLARE
+    id_observacion BIGINT;
 BEGIN
     INSERT INTO observaciones (
         id_especie,
+        nombre_temporal,
         id_usuario,
         id_sendero,
-	    descripcion,
-		fecha_observacion,
+        descripcion,
+        fecha_observacion,
         coordenada_longitud,
         coordenada_latitud,
-		id_estado,
+        id_estado,
         imagen_1,
-		imagen_2,
-		imagen_3,
+        imagen_2,
+        imagen_3,
         fecha_creado,
-		fecha_modificado
+        fecha_modificado
     ) VALUES (
-        (data_observacion->>'id_especie')::BIGINT,
+        CASE 
+            WHEN (data_observacion->>'id_especie')::BIGINT IS NOT NULL 
+                THEN (data_observacion->>'id_especie')::BIGINT 
+            ELSE NULL
+        END,
+        CASE 
+            WHEN (data_observacion->>'id_especie')::BIGINT IS NULL 
+                THEN (data_observacion->>'nombre_temporal')
+            ELSE NULL
+        END,
         (data_observacion->>'id_usuario')::BIGINT,
         (data_observacion->>'id_sendero')::BIGINT,
         (data_observacion->>'descripcion'),
         (data_observacion->>'fecha_observacion')::TIMESTAMP,
         (data_observacion->>'coordenada_longitud')::DECIMAL,
         (data_observacion->>'coordenada_latitud')::DECIMAL,
-		COALESCE((data_observacion->>'id_estado')::BIGINT, 1),
-		(data_observacion->>'imagen_1'),
-	    NOW(),
-		NOW()
+        COALESCE((data_observacion->>'id_estado')::BIGINT, 1), -- Valor predeterminado para id_estado
+        (data_observacion->>'imagen_1'),
+        (data_observacion->>'imagen_2'),
+        (data_observacion->>'imagen_3'),
+        NOW(),
+        NOW()
     )
-    RETURNING id_observacion INTO new_id;
+    RETURNING id_observacion INTO id_observacion;
+
+    RETURN id_observacion;
 END;
-$$;
+$$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION buscar_alertas(
