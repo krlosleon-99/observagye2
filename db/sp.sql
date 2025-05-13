@@ -316,7 +316,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION public.buscar_observaciones_estado(
 	p_estado boolean DEFAULT NULL::boolean,
 	p_id_usuario integer DEFAULT NULL::integer)
-    RETURNS TABLE(id_observacion bigint, id_especie bigint, nombre_comun character varying, nombre_cientifico character varying, nombre_categoria character varying, id_usuario bigint, usuario text, id_sendero bigint, nombre_sendero character varying, descripcion text, fecha_observacion timestamp without time zone, coordenada_longitud numeric, coordenada_latitud numeric, estado boolean, imagen_1 text, imagen_2 text, imagen_3 text, fecha_creado timestamp without time zone) 
+    RETURNS TABLE(id_observacion bigint, id_especie bigint, nombre_comun character varying, nombre_cientifico character varying, nombre_categoria character varying, id_usuario bigint, usuario text, id_sendero bigint, nombre_sendero character varying, descripcion text, fecha_observacion timestamp without time zone, coordenada_longitud numeric, coordenada_latitud numeric, id_estado bigint, imagen_1 text, imagen_2 text, imagen_3 text, fecha_creado timestamp without time zone) 
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
