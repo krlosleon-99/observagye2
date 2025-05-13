@@ -58,65 +58,67 @@ CREATE VIEW tbv_alertas AS
 
 
 CREATE OR REPLACE VIEW public.tbv_observaciones
- AS
- SELECT o.id_observacion,
+AS
+SELECT 
+    o.id_observacion,
     o.id_especie,
     e.nombre_comun,
     e.nombre_cientifico,
     ce.nombre_categoria,
     o.id_usuario,
-    (u.nombres::text || ' '::text) || u.apellidos::text AS usuario,
+    (u.nombres || ' ' || u.apellidos) AS usuario,
     o.id_sendero,
     s.nombre_sendero,
     o.descripcion,
     o.fecha_observacion,
     o.coordenada_longitud,
     o.coordenada_latitud,
-    o.id_estado,
-	eo.nombre_estado,
+    o.id_estado, -- Cambiado de estado a id_estado
+    eo.nombre_estado,
     o.imagen_1,
     o.imagen_2,
     o.imagen_3,
     o.fecha_creado,
-	o.fecha_modificado
-   FROM observaciones o
-     LEFT JOIN especies e ON o.id_especie = e.id_especie
-     LEFT JOIN usuarios u ON o.id_usuario = u.id_usuario
-     LEFT JOIN senderos s ON o.id_sendero = s.id_sendero
-     LEFT JOIN categorias_especies ce ON e.id_categoria_especie = ce.id_categoria_especie
-	 LEFT JOIN estados_observacion eo ON o.id_estado = eo.id_estado_observacion;
+    o.fecha_modificado
+FROM observaciones o
+LEFT JOIN especies e ON o.id_especie = e.id_especie
+LEFT JOIN usuarios u ON o.id_usuario = u.id_usuario
+LEFT JOIN senderos s ON o.id_sendero = s.id_sendero
+LEFT JOIN categorias_especies ce ON e.id_categoria_especie = ce.id_categoria_especie
+LEFT JOIN estados_observacion eo ON o.id_estado = eo.id_estado_observacion;
 ALTER TABLE public.tbv_observaciones
     OWNER TO postgres;
 
 
 CREATE OR REPLACE VIEW public.tbv_last_observations
- AS
- SELECT a.id_observacion,
+AS
+SELECT 
+    a.id_observacion,
     a.id_especie,
     b.nombre_comun,
     b.nombre_cientifico,
     e.nombre_categoria,
     a.id_usuario,
-    (c.nombres::text || ' '::text) || c.apellidos::text AS usuario,
+    (c.nombres || ' ' || c.apellidos) AS usuario,
     a.id_sendero,
     d.nombre_sendero,
     a.descripcion,
     a.fecha_observacion,
     a.coordenada_longitud,
     a.coordenada_latitud,
-    a.id_estado,
-	f.nombre_estado,
+    a.id_estado, -- Cambiado de estado a id_estado
+    f.nombre_estado,
     a.imagen_1,
     a.imagen_2,
     a.imagen_3,
     a.fecha_creado
-   FROM observaciones a
-     JOIN especies b ON a.id_especie = b.id_especie
-     JOIN usuarios c ON a.id_usuario = c.id_usuario
-     JOIN senderos d ON a.id_sendero = d.id_sendero
-     JOIN categorias_especies e ON b.id_categoria_especie = e.id_categoria_especie
-	 JOIN estados_observacion f ON a.id_estado = f.id_estado_observacion
-  WHERE a.id_estado = 2;
+FROM observaciones a
+JOIN especies b ON a.id_especie = b.id_especie
+JOIN usuarios c ON a.id_usuario = c.id_usuario
+JOIN senderos d ON a.id_sendero = d.id_sendero
+JOIN categorias_especies e ON b.id_categoria_especie = e.id_categoria_especie
+JOIN estados_observacion f ON a.id_estado = f.id_estado_observacion
+WHERE a.id_estado = 2;
 
 ALTER TABLE public.tbv_last_observations
     OWNER TO postgres;
@@ -180,32 +182,33 @@ ALTER TABLE public.tbv_observaciones_alertas_usuarios
 
 
 CREATE OR REPLACE VIEW public.vw_buscar_observaciones
- AS
- SELECT a.id_observacion,
+AS
+SELECT 
+    a.id_observacion,
     a.id_especie,
     b.nombre_comun,
     b.nombre_cientifico,
     e.nombre_categoria,
     a.id_usuario,
-    (c.nombres::text || ' '::text) || c.apellidos::text AS usuario,
+    (c.nombres || ' ' || c.apellidos) AS usuario,
     a.id_sendero,
     d.nombre_sendero,
     a.descripcion,
     a.fecha_observacion,
     a.coordenada_longitud,
     a.coordenada_latitud,
-    a.id_estado,
-	eo.nombre_estado,
+    a.id_estado, -- Cambiado de estado a id_estado
+    eo.nombre_estado,
     a.imagen_1,
     a.imagen_2,
     a.imagen_3,
     a.fecha_creado
-   FROM observaciones a
-     JOIN especies b ON a.id_especie = b.id_especie
-     JOIN usuarios c ON a.id_usuario = c.id_usuario
-     JOIN senderos d ON a.id_sendero = d.id_sendero
-     JOIN categorias_especies e ON b.id_categoria_especie = e.id_categoria_especie
-	 JOIN estados_observacion eo ON a.id_estado = eo.id_estado_observacion;
+FROM observaciones a
+JOIN especies b ON a.id_especie = b.id_especie
+JOIN usuarios c ON a.id_usuario = c.id_usuario
+JOIN senderos d ON a.id_sendero = d.id_sendero
+JOIN categorias_especies e ON b.id_categoria_especie = e.id_categoria_especie
+JOIN estados_observacion eo ON a.id_estado = eo.id_estado_observacion;
 
 ALTER TABLE public.vw_buscar_observaciones
     OWNER TO postgres;

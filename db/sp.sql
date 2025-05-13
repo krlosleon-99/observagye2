@@ -314,14 +314,29 @@ $$ LANGUAGE plpgsql;
 -- DROP FUNCTION IF EXISTS public.buscar_observaciones_estado(boolean, integer);
 
 CREATE OR REPLACE FUNCTION public.buscar_observaciones_estado(
-	p_estado bigint DEFAULT NULL::bigint,
-	p_id_usuario integer DEFAULT NULL::integer)
-    RETURNS TABLE(id_observacion bigint, id_especie bigint, nombre_comun character varying, nombre_cientifico character varying, nombre_categoria character varying, id_usuario bigint, usuario text, id_sendero bigint, nombre_sendero character varying, descripcion text, fecha_observacion timestamp without time zone, coordenada_longitud numeric, coordenada_latitud numeric, id_estado bigint, imagen_1 text, imagen_2 text, imagen_3 text, fecha_creado timestamp without time zone) 
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-    ROWS 1000
-
+    p_estado bigint DEFAULT NULL::bigint,
+    p_id_usuario integer DEFAULT NULL::integer)
+RETURNS TABLE(
+    id_observacion bigint,
+    id_especie bigint,
+    nombre_comun character varying,
+    nombre_cientifico character varying,
+    nombre_categoria character varying,
+    id_usuario bigint,
+    usuario text,
+    id_sendero bigint,
+    nombre_sendero character varying,
+    descripcion text,
+    fecha_observacion timestamp without time zone,
+    coordenada_longitud numeric,
+    coordenada_latitud numeric,
+    id_estado bigint,
+    imagen_1 text,
+    imagen_2 text,
+    imagen_3 text,
+    fecha_creado timestamp without time zone
+) 
+LANGUAGE 'plpgsql'
 AS $BODY$
 BEGIN
     RETURN QUERY
@@ -336,20 +351,20 @@ BEGIN
         a.id_sendero,
         d.nombre_sendero,
         a.descripcion,
-        a.fecha_observacion, -- Aquí sigue siendo TIMESTAMP
+        a.fecha_observacion,
         a.coordenada_longitud,
         a.coordenada_latitud,
-        a.id_estado,
+        a.id_estado, -- Cambiado de estado a id_estado
         a.imagen_1,
         a.imagen_2,
         a.imagen_3,
         a.fecha_creado
     FROM observaciones a
-    JOIN especies b ON a.id_especie = b.id_especie
-    JOIN usuarios c ON a.id_usuario = c.id_usuario
-    JOIN senderos d ON a.id_sendero = d.id_sendero
-    JOIN categorias_especies e ON b.id_categoria_especie = e.id_categoria_especie
-    WHERE (p_estado IS NULL OR a.id_estado = p_estado)
+    LEFT JOIN especies b ON a.id_especie = b.id_especie
+    LEFT JOIN usuarios c ON a.id_usuario = c.id_usuario
+    LEFT JOIN senderos d ON a.id_sendero = d.id_sendero
+    LEFT JOIN categorias_especies e ON b.id_categoria_especie = e.id_categoria_especie
+    WHERE (p_estado IS NULL OR a.id_estado = p_estado) -- Cambiado de estado a id_estado
       AND (p_id_usuario IS NULL OR a.id_usuario = p_id_usuario);
 END;
 $BODY$;
