@@ -314,7 +314,7 @@ $$ LANGUAGE plpgsql;
 -- DROP FUNCTION IF EXISTS public.buscar_observaciones_estado(boolean, integer);
 
 CREATE OR REPLACE FUNCTION public.buscar_observaciones_estado(
-	p_estado boolean DEFAULT NULL::boolean,
+	p_estado bigint DEFAULT NULL::bigint,
 	p_id_usuario integer DEFAULT NULL::integer)
     RETURNS TABLE(id_observacion bigint, id_especie bigint, nombre_comun character varying, nombre_cientifico character varying, nombre_categoria character varying, id_usuario bigint, usuario text, id_sendero bigint, nombre_sendero character varying, descripcion text, fecha_observacion timestamp without time zone, coordenada_longitud numeric, coordenada_latitud numeric, id_estado bigint, imagen_1 text, imagen_2 text, imagen_3 text, fecha_creado timestamp without time zone) 
     LANGUAGE 'plpgsql'
@@ -467,7 +467,7 @@ BEGIN
         fecha_observacion = COALESCE(NULLIF((data_observacion->>'fecha_observacion')::DATE, v_registro_actual.fecha_observacion), v_registro_actual.fecha_observacion),
         coordenada_longitud = COALESCE(NULLIF((data_observacion->>'coordenada_longitud')::FLOAT, v_registro_actual.coordenada_longitud), v_registro_actual.coordenada_longitud),
         coordenada_latitud = COALESCE(NULLIF((data_observacion->>'coordenada_latitud')::FLOAT, v_registro_actual.coordenada_latitud), v_registro_actual.coordenada_latitud),
-        estado = COALESCE(NULLIF((data_observacion->>'estado')::BOOLEAN, v_registro_actual.estado), v_registro_actual.estado),
+        id_estado = COALESCE(NULLIF((data_observacion->>'id_estado')::BIGINT, v_registro_actual.id_estado), v_registro_actual.id_estado),
         imagen_1 = COALESCE(NULLIF(data_observacion->>'imagen_1', v_registro_actual.imagen_1), v_registro_actual.imagen_1),
         imagen_2 = COALESCE(NULLIF(data_observacion->>'imagen_2', v_registro_actual.imagen_2), v_registro_actual.imagen_2),
         imagen_3 = COALESCE(NULLIF(data_observacion->>'imagen_3', v_registro_actual.imagen_3), v_registro_actual.imagen_3),
