@@ -79,7 +79,7 @@ export async function ListaObservaciones(req: Request, res: Response) {
 
     // Consulta las observaciones desde la base de datos
     const result = await dbPool.query(
-      `SELECT * FROM buscar_observaciones_estado($1, $2)`,
+      `SELECT * FROM buscar_observaciones_estado($1::BIGINT, $2::INTEGER)`,
       [id_estado, usuario]
     );
 
